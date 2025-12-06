@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Chat UI</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      background-color: #f5f5f5;
+    }
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 800px;
+      margin: 0 auto;
+      border: 1px solid #ddd;
+      background-color: #ffffff;
+    }
+
+    /* Top chat area */
+    .chat-display {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    /* Simple message bubble styles */
+    .message {
+      max-width: 75%;
+      padding: 8px 12px;
+      margin: 5px 0;
+      border-radius: 12px;
+      line-height: 1.4;
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+
+    .message.user {
+      background-color: #e0f7fa;
+      align-self: flex-end;
+    }
+
+    .message.ai {
+      background-color: #eeeeee;
+      align-self: flex-start;
+    }
+
+    /* Allow images/shapes inside messages */
+    .message img {
+      max-width: 100%;
+      display: block;
+      margin-top: 8px;
+      border-radius: 8px;
+    }
+
+    /* Bottom input area */
+    .chat-input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+      padding: 8px;
+      background-color: #fafafa;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .send-button {
+      margin-left: 8px;
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      background-color: #2196f3;
+      color: white;
+      cursor: pointer;
+    }
+
+    .send-button:hover {
+      background-color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <!-- Upper chat display area -->
+    <div id="chatDisplay" class="chat-display">
+      <!-- Example initial AI message -->
+      <div class="message ai">
+        Hello! I am your AI tutor. Ask me a question or upload a homework problem.
+      </div>
+    </div>
+
+    <!-- Lower text input area -->
+    <div class="chat-input-area">
+      <input
+        id="chatInput"
+        class="chat-input"
+        type="text"
+        placeholder="Type your message here..."
+      />
+      <button id="sendButton" class="send-button">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatDisplay = document.getElementById('chatDisplay');
+    const chatInput = document.getElementById('chatInput');
+    const sendButton = document.getElementById('sendButton');
+
+    function addMessage(text, sender = 'user') {
+      const msgDiv = document.createElement('div');
+      msgDiv.classList.add('message', sender);
+      msgDiv.innerHTML = text; // allows simple HTML like <br> or <img>
+      chatDisplay.appendChild(msgDiv);
+
+      // Scroll to bottom
+      chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      // Show user message
+      addMessage(text, 'user');
+
+      // Clear input
+      chatInput.value = '';
+
+      // TODO: Replace this with real AI call later
+      // Simple echo-style fake AI reply for now:
+      setTimeout(() => {
+        addMessage("AI (demo): You said — " + text, 'ai');
+      }, 400);
+    }
+
+    // Send on button click
+    sendButton.addEventListener('click', handleSend);
+
+    // Send on Enter key
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+
+    // Example: how to insert an image message programmatically
+    // addMessage('Here is a sample shape:<br><img src="https://via.placeholder.com/150" />', 'ai');
+  </script>
+</body>
+</html>
